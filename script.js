@@ -1,34 +1,29 @@
-var data;
-function GetNama(data) {
-    const xhr = new XMLHttpRequest();
+function loadContent(){
+    var url = "http://159.223.51.203:81/api/bio";
+    fetch(url).then(response => response.json())
+        .then(function(data){
+            var template = data.map(post => {
+                return `
+                <div style="width: 400px; height: hug;">
+                    <div class="card border-left-success shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col-auto">
+                                    <div class="h9 mb-0 font-weight-bold text-blue-500">${post.name}</div>
+                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                        ${post.id}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                `;
+            });
 
-    if (xhr.readyState === XMLHttpRequest.DONE) {
-            if (xhr.status === 200) {
-                const response = JSON.parse(xhr.responseText);
-                let result = document.querySelector('.result')
-                innerHTML = ` ${response.name}, ${response.id}`;
-                result.appendChild(innerHTML);
-            } else {
-                console.error('Gagal memuat data');
-            }
-        }
-
-    xhr.open('GET', `http://159.223.51.203:81/api/bio`, true);
-    xhr.send();
-
-    inputKeyword.value = null;
+            document.getElementById("hasil").innerHTML = template.join('<br>');
+        }).catch(function(e){
+            alert("gagal");
+        });
 };
-/*
- function GetNama() {
-    const xhr = new XMLHttpRequest();
-    let card = document.createElement('div');
-                card.classList.add('card');
-                card.classList.add('card1');
-                card.classList.add('card2');
-                card.innerHTML = `<h2 style="margin-bottom: 15px;">Results for: ${document.name}, ${document.id}</h2>`;
-                result.appendChild(card);
-    xhr.open('GET', `http://159.223.51.203:81/api/bio`, true);
-    xhr.send();
-
-}
-*/
